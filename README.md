@@ -123,23 +123,23 @@ Views process user requests, interact with models for database operations, and r
 
 ### Home Page
 
-![Home](images/home.png)
+![Home](screenshots/home.png)
 
 ### Reports Page
 
-![Reports](images/reports.png)
+![Reports](screenshots/reports.png)
 
 ### Marketplace
 
-![Marketplace](images/marketplace.png)
+![Marketplace](screenshots/marketplace.png)
 
 ### Skills Page
 
-![Reports](images/skills.png)
+![Skills](screenshots/skills.png)
 
 ### About page
 
-![Marketplace](images/about.png)
+![About](screenshots/about.png)
 
 ---
 
