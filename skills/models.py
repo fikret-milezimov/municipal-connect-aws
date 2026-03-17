@@ -67,5 +67,5 @@ class Skill(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name or "")
         super().save(*args, **kwargs)
