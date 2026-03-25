@@ -9,6 +9,7 @@ class SkillsConfig(AppConfig):
 
         try:
             from .models import SkillCategory
+            SkillCategory.objects.exists()
         except (OperationalError, ProgrammingError):
             return
 
@@ -19,5 +20,6 @@ class SkillsConfig(AppConfig):
             "Education & Tutoring",
             "Health & Fitness",
         ]
+
         for name in categories:
             SkillCategory.objects.get_or_create(name=name)

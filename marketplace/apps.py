@@ -9,6 +9,7 @@ class MarketplaceConfig(AppConfig):
 
         try:
             from .models import MarketplaceCategory
+            MarketplaceCategory.objects.exists()
         except (OperationalError, ProgrammingError):
             return
 
@@ -19,5 +20,6 @@ class MarketplaceConfig(AppConfig):
             "Home & Garden",
             "Other",
         ]
+
         for name in categories:
             MarketplaceCategory.objects.get_or_create(name=name)
