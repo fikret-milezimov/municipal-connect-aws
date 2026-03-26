@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-shell reveal">
+    <section class="glass-panel auth-aside reveal reveal-delay-1">
+        <div class="section-kicker mb-2">Welcome Back</div>
+        <h1 class="hero-title fw-semibold mb-3">Sign in to keep your neighborhood in motion.</h1>
+        <p class="text-muted mb-0">
+            Access your reports, shared skills, and marketplace posts from one place.
+        </p>
+
+        <div class="auth-highlights">
+            <div class="auth-highlight">
+                Track updates on local issues you have reported.
+            </div>
+            <div class="auth-highlight">
+                Manage offers to help and connect with nearby residents.
+            </div>
+            <div class="auth-highlight">
+                Revisit saved community activity without starting over.
+            </div>
+        </div>
+    </section>
+
+    <section class="glass-panel auth-form-card reveal reveal-delay-2">
+        <div class="section-kicker mb-2">Account Access</div>
+        <h2 class="mb-2">Login</h2>
+        <p class="text-muted mb-4">
+            Use your account credentials to continue.
+        </p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mb-0" role="alert">
+                    {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="auth-field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="helptext">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="field-error-list">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+                <a href="{% url 'common:home' %}" class="btn btn-secondary">Back Home</a>
+            </div>
+        </form>
+
+        <p class="text-muted mb-0 mt-4">
+            Need an account?
+            <a href="{% url 'accounts:register' %}" class="auth-meta-link">Create one here</a>.
+        </p>
+    </section>
+</div>
+
+{% endblock %}

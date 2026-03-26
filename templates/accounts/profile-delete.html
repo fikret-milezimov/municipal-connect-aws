@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="glass-panel p-4 p-lg-5 reveal">
+    <div class="section-kicker mb-2">Confirm Action</div>
+    <h2 class="mb-3">Delete Your Profile</h2>
+
+    <p class="mb-3">
+        You are about to delete the account for <strong>{{ object.username }}</strong>.
+    </p>
+    <p class="text-muted mb-4">
+        This action cannot be undone. Your login and connected profile information will be removed.
+    </p>
+
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

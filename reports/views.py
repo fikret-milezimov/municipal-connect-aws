@@ -7,6 +7,10 @@ from .models import Report
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from .forms import ReportCreateForm, ReportUpdateForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+
+
 
 
 class ReportListView(SearchMixin, ListView):
@@ -34,6 +38,8 @@ class ReportCreateView(CreateView):
     success_url = reverse_lazy("reports:list")
 
     def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.user = self.request.user
         response = super().form_valid(form)
         messages.success(self.request, "Report created successfully.")
         return response
@@ -68,3 +74,15 @@ class ReportDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         messages.warning(self.request, "Report deleted.")
         return response
+
+
+
+
+
+class MyReportsListView(LoginRequiredMixin, ListView):
+    model = Report
+    template_name = "reports/my-reports.html"
+    context_object_name = "reports"
+
+    def get_queryset(self):
+        return Report.objects.filter(user=self.request.user)

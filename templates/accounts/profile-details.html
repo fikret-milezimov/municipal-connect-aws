@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="glass-panel p-4 p-lg-5 reveal">
+    <div class="section-kicker mb-2">My Profile</div>
+    <div class="row g-4 align-items-start mb-4">
+        <div class="col-lg-auto">
+            <div class="soft-card p-2">
+                {% if profile.profile_picture %}
+                    <img
+                        src="{{ profile.profile_picture.url }}"
+                        alt="{{ profile.user.username }} profile picture"
+                        class="rounded"
+                        style="width: 160px; height: 160px; object-fit: cover;"
+                    >
+                {% else %}
+                    <div
+                        class="d-flex align-items-center justify-content-center rounded text-uppercase fw-semibold"
+                        style="width: 160px; height: 160px; background: rgba(45, 106, 115, 0.12); color: #23545b; font-size: 2.5rem;"
+                    >
+                        {{ profile.user.first_name|slice:":1" }}{{ profile.user.last_name|slice:":1" }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="soft-card p-4 h-100">
+                <h4 class="mb-3">About</h4>
+                {% if profile.bio %}
+                    <p class="mb-0">{{ profile.bio|linebreaksbr }}</p>
+                {% else %}
+                    <p class="text-muted mb-0">
+                        No bio has been added yet. Update this profile to tell neighbors a bit more about yourself.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="soft-card p-4 h-100">
+                <h4 class="mb-3">Profile Details</h4>
+                <p class="mb-3">
+                    <strong>Username:</strong> {{ profile.user.username }}
+                </p>
+                <p class="mb-3">
+                    <strong>Fullname:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}
+                </p>
+                <p class="mb-3">
+                    <strong>Email:</strong> {{ profile.user.email|default:"Not provided" }}
+                </p>
+                <p class="mb-0">
+                    <strong>Location:</strong> {{ profile.location|default:"Not provided" }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="soft-card p-4 mt-4">
+        <h4 class="mb-3">My Activity</h4>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <a href="{% url 'reports:my-reports' %}" class="text-decoration-none">
+                    <div class="p-3 rounded border border-white border-opacity-25 bg-white bg-opacity-50 h-100">
+                        <div class="section-kicker mb-2">Reports</div>
+                        <div class="fw-semibold text-dark">My Reports</div>
+                        <p class="text-muted mb-0 mt-2">Review issues you have shared with the community.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="{% url 'skills:list' %}" class="text-decoration-none">
+                    <div class="p-3 rounded border border-white border-opacity-25 bg-white bg-opacity-50 h-100">
+                        <div class="section-kicker mb-2">Skills</div>
+                        <div class="fw-semibold text-dark">My Skills</div>
+                        <p class="text-muted mb-0 mt-2">Manage the skills and help offers on your profile.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="{% url 'marketplace:list' %}" class="text-decoration-none">
+                    <div class="p-3 rounded border border-white border-opacity-25 bg-white bg-opacity-50 h-100">
+                        <div class="section-kicker mb-2">Marketplace</div>
+                        <div class="fw-semibold text-dark">My Marketplace Items</div>
+                        <p class="text-muted mb-0 mt-2">Check the items you have posted for sharing or exchange.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{% url 'accounts:profile-edit' %}" class="btn btn-primary">Edit Profile</a>
+        <a href="{% url 'accounts:profile-delete' %}" class="btn btn-danger">Delete Profile</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -2,7 +2,10 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
 
+
+UserModel = get_user_model()
 
 
 class Report(models.Model):
@@ -42,11 +45,20 @@ class Report(models.Model):
         validators=[phone_validator]
     )
 
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+        related_name="reports",
+        blank=False,
+        null=False,
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-created_at"]
 
+    @property
     def is_active(self):
         return self.status != self.Status.RESOLVED
 

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-shell reveal">
+    <section class="glass-panel auth-aside reveal reveal-delay-1">
+        <div class="section-kicker mb-2">Join The Network</div>
+        <h1 class="hero-title fw-semibold mb-3">Create an account for local action and mutual support.</h1>
+        <p class="text-muted mb-0">
+            Register once to report issues faster, offer your skills, and share useful items with neighbors.
+        </p>
+
+        <div class="auth-highlights">
+            <div class="auth-highlight">
+                Submit reports and follow their progress over time.
+            </div>
+            <div class="auth-highlight">
+                Publish skills that can help nearby residents directly.
+            </div>
+            <div class="auth-highlight">
+                Participate in a more useful, connected local marketplace.
+            </div>
+        </div>
+    </section>
+
+    <section class="glass-panel auth-form-card reveal reveal-delay-2">
+        <div class="section-kicker mb-2">New Account</div>
+        <h2 class="mb-2">Register</h2>
+        <p class="text-muted mb-4">
+            Fill in the details below to start using Municipal Connect.
+        </p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mb-0" role="alert">
+                    {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="auth-field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="helptext">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="field-error-list">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Create Account</button>
+                <a href="{% url 'common:home' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <p class="text-muted mb-0 mt-4">
+            Already registered?
+            <a href="{% url 'accounts:login' %}" class="auth-meta-link">Sign in instead</a>.
+        </p>
+    </section>
+</div>
+
+{% endblock %}

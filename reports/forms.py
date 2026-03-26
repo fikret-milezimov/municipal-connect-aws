@@ -5,7 +5,7 @@ from .models import Report
 class ReportCreateForm(forms.ModelForm):
     class Meta:
         model = Report
-        exclude = ["created_at", "slug"]
+        exclude = ["created_at", "slug", "user"]
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "Broken streetlight"}),
             "description": forms.Textarea(
@@ -27,7 +27,7 @@ class ReportUpdateForm(forms.ModelForm):
     )
     class Meta:
         model = Report
-        exclude = ["slug"]
+        exclude = ["slug", "user"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

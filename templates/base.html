@@ -24,28 +24,27 @@
             Municipal Connect
         </a>
 
-        <div class="navbar-nav ms-auto">
+        <div class="navbar-nav me-auto">
+            <a class="nav-link" href="{% url 'common:home' %}">Home</a>
+            <a class="nav-link" href="{% url 'reports:list' %}">Reports</a>
+            <a class="nav-link" href="{% url 'skills:list' %}">Skills</a>
+            <a class="nav-link" href="{% url 'marketplace:list' %}">Marketplace</a>
+            <a class="nav-link" href="{% url 'common:about' %}">About</a>
+        </div>
 
-            <a class="nav-link" href="{% url 'common:home' %}">
-                Home
-            </a>
-
-            <a class="nav-link" href="{% url 'reports:list' %}">
-                Reports
-            </a>
-
-            <a class="nav-link" href="{% url 'skills:list' %}">
-                Skills
-            </a>
-
-            <a class="nav-link" href="{% url 'marketplace:list' %}">
-                Marketplace
-            </a>
-
-            <a class="nav-link" href="{% url 'common:about' %}">
-                About
-            </a>
-
+        <div class="navbar-nav ms-auto align-items-lg-center">
+            {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+                <form method="post" action="{% url 'accounts:logout' %}" class="d-flex align-items-center mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link text-decoration-none p-0 ms-lg-3">
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+            {% endif %}
         </div>
     </div>
 </nav>
