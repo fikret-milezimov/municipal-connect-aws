@@ -79,10 +79,12 @@ class ReportDeleteView(DeleteView):
 
 
 
-class MyReportsListView(LoginRequiredMixin, ListView):
+class MyReportsListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Report
     template_name = "reports/my-reports.html"
     context_object_name = "reports"
+    search_fields = ["title", "description", "location"]
 
     def get_queryset(self):
-        return Report.objects.filter(user=self.request.user)
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)

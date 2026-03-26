@@ -5,7 +5,7 @@ from .models import MarketplaceItem
 class MarketplaceCreateForm(forms.ModelForm):
     class Meta:
         model = MarketplaceItem
-        exclude = ["created_at", "slug"]
+        exclude = ["created_at", "slug", "user"]
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "Used bike in good condition"}),
             "description": forms.Textarea(

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel p-4 p-lg-5 reveal">
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <div class="section-kicker mb-1">Personal Marketplace</div>
+            <h2 class="mb-0">My Marketplace Items</h2>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
+                ← Profile
+            </a>
+
+            <form method="get" class="d-flex flex-wrap gap-2">
+                <input type="text"
+                       name="q"
+                       value="{{ request.GET.q }}"
+                       placeholder="Search my items..."
+                       class="form-control"
+                       oninput="if(this.value === '') this.form.submit();">
+            </form>
+
+            <a href="{% url 'marketplace:list' %}" class="btn btn-outline-primary">
+                All Items
+            </a>
+
+            <a href="{% url 'marketplace:create' %}" class="btn btn-success">
+                Create Item
+            </a>
+        </div>
+    </div>
+
+    {% if items %}
+        <div class="row g-3">
+            {% for item in items %}
+                <div class="col-md-4 reveal reveal-delay-1">
+                    <div class="soft-card h-100 overflow-hidden">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+
+                        <div class="p-3">
+                            <h5 class="mb-2">
+                                <a class="text-decoration-none" href="{% url 'marketplace:details' item.pk item.slug %}">
+                                    {{ item.title }}
+                                </a>
+                            </h5>
+                            <p class="text-muted mb-2">{{ item.description|truncatechars:60 }}</p>
+
+                            <p class="mb-2">
+                                <span class="badge
+                                    {% if item.type == item.Type.OFFER %}bg-primary
+                                    {% elif item.type == item.Type.WANTED %}bg-warning text-dark
+                                    {% elif item.type == item.Type.GIVEAWAY %}bg-success
+                                    {% endif %}
+                                ">
+                                    {{ item.type }}
+                                </span>
+                                {% if item.condition %}
+                                <span class="badge bg-secondary">{{ item.condition }}</span>
+                                {% endif %}
+                            </p>
+                            {% if item.category %}
+                            <p class="mb-0">
+                                <strong>Category:</strong> {{ item.category.name }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="soft-card p-4 text-center">
+            <h4 class="mb-2">No marketplace items yet</h4>
+            <p class="text-muted mb-3">
+                You have not posted any marketplace items yet.
+            </p>
+            <a href="{% url 'marketplace:create' %}" class="btn btn-primary">Create Your First Item</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

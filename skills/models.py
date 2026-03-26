@@ -1,6 +1,10 @@
 from django.core.validators import MinLengthValidator, RegexValidator
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
+
+
+UserModel = get_user_model()
 
 
 phone_validator = RegexValidator(
@@ -48,6 +52,14 @@ class Skill(models.Model):
     contact_phone = models.CharField(
         max_length=10,
         validators=[phone_validator],
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+        related_name="skills",
+        blank=True,
+        null=True,
     )
 
     categories = models.ManyToManyField(

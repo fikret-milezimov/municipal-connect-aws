@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -33,6 +34,8 @@ class SkillCreateView(CreateView):
     success_url = reverse_lazy("skills:list")
 
     def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.user = self.request.user
         response = super().form_valid(form)
         messages.success(self.request, "Skill created successfully.")
         return response
@@ -67,3 +70,13 @@ class SkillDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         messages.warning(self.request, "Skill deleted.")
         return response
+
+class MySkillsListView(LoginRequiredMixin, SearchMixin, ListView):
+    model = Skill
+    template_name = "skills/my-skills.html"
+    context_object_name = "skills"
+    search_fields = ["name", "description"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)

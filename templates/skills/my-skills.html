@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel p-4 p-lg-5 reveal">
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <div class="section-kicker mb-1">Personal Skills</div>
+            <h2 class="mb-0">My Skills</h2>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
+                ← Profile
+            </a>
+
+            <form method="get" class="d-flex flex-wrap gap-2">
+                <input type="text"
+                       name="q"
+                       value="{{ request.GET.q }}"
+                       placeholder="Search my skills..."
+                       class="form-control"
+                       oninput="if(this.value === '') this.form.submit();">
+            </form>
+
+            <a href="{% url 'skills:list' %}" class="btn btn-outline-primary">
+                All Skills
+            </a>
+
+            <a href="{% url 'skills:create' %}" class="btn btn-success">
+                Create Skill
+            </a>
+        </div>
+    </div>
+
+    {% if skills %}
+        <div class="row g-3">
+            {% for skill in skills %}
+                <div class="col-md-6 reveal reveal-delay-1">
+                    <div class="soft-card p-3 h-100">
+                        <h5 class="mb-2">
+                            <a class="text-decoration-none" href="{% url 'skills:details' skill.pk skill.slug %}">
+                                {{ skill.name }}
+                            </a>
+                        </h5>
+
+                        <p class="text-muted mb-2">{{ skill.description|truncatechars:80 }}</p>
+
+                        {% if skill.level %}
+                        <p class="mb-2"><strong>Level:</strong> {{ skill.level }}</p>
+                        {% endif %}
+                        {% if skill.categories.exists %}
+                        <p class="mb-2">
+                            <strong>Categories:</strong>
+                            {% for category in skill.categories.all %}
+                                <span class="badge bg-secondary">
+                                    {{ category.name }}
+                                </span>
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+
+                        <p class="mb-0">
+                            <strong>Contact:</strong>
+                            {{ skill.contact_name }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="soft-card p-4 text-center">
+            <h4 class="mb-2">No skills yet</h4>
+            <p class="text-muted mb-3">
+                You have not shared any skills with the community yet.
+            </p>
+            <a href="{% url 'skills:create' %}" class="btn btn-primary">Create Your First Skill</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
