@@ -40,6 +40,7 @@ PROJECT_APPS = [
     "reports",
     "skills",
     "marketplace",
+    "accounts.apps.AccountsConfig",
 ]
 
 INSTALLED_APPS = [
