@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.shortcuts import redirect
 
 from common.mixins import SearchMixin
+from common.utils import is_content_manager
 from .forms import MarketplaceCreateForm
 from .models import MarketplaceItem
 
@@ -26,6 +27,16 @@ class MarketplaceDetailView(DetailView):
             return redirect("marketplace:details", pk=self.object.pk, slug=self.object.slug)
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["can_edit"] = (
+                self.request.user == self.object.user
+                or is_content_manager(self.request.user)
+        )
+
+        return context
 
 class MarketplaceCreateView(LoginRequiredMixin, CreateView):
     model = MarketplaceItem
@@ -72,6 +83,14 @@ class MarketplaceUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("marketplace:details", kwargs={"pk": self.object.pk, "slug": self.object.slug})
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if is_content_manager(self.request.user):
+            return qs
+
+        return qs.filter(user=self.request.user)
+
 class MarketplaceDeleteView(DeleteView):
     model = MarketplaceItem
     template_name = "marketplace/marketplace-delete.html"
@@ -81,6 +100,14 @@ class MarketplaceDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         messages.warning(self.request, "Marketplace item deleted.")
         return response
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if is_content_manager(self.request.user):
+            return qs
+
+        return qs.filter(user=self.request.user)
 
 class MyItemsListView(LoginRequiredMixin, SearchMixin, ListView):
     model = MarketplaceItem

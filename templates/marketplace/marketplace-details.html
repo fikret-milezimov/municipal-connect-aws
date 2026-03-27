@@ -38,12 +38,14 @@
         <a href="{% url 'marketplace:list' %}" class="btn btn-secondary">
             Back
         </a>
-        <a href="{% url 'marketplace:edit' item.pk %}" class="btn btn-warning">
-            Edit
-        </a>
-        <a href="{% url 'marketplace:delete' item.pk %}" class="btn btn-danger">
-            Delete
-        </a>
+        {% if can_edit %}
+            <a href="{% url 'marketplace:edit' item.pk %}" class="btn btn-warning">
+                Edit
+            </a>
+            <a href="{% url 'marketplace:delete' item.pk %}" class="btn btn-danger">
+                Delete
+            </a>
+        {% endif%}
     </div>
 </div>
 

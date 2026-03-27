@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from common.mixins import SearchMixin
+from common.utils import is_moderator
 from .models import Report
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
@@ -30,6 +31,17 @@ class ReportDetailView(DetailView):
             return redirect("reports:details", pk=self.object.pk, slug=self.object.slug)
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["is_moderator"] = is_moderator(self.request.user)
+        context["can_edit"] = (
+                self.request.user == self.object.user
+                or context["is_moderator"]
+        )
+
+        return context
 
 class ReportCreateView(LoginRequiredMixin, CreateView):
     model = Report
@@ -59,12 +71,26 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
             messages.warning(request, "You must be logged in to perform this action.")
         return super().dispatch(request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
 class ReportUpdateView(UpdateView):
     model = Report
     form_class = ReportUpdateForm
     template_name = "reports/report-edit.html"
 
     def form_valid(self, form):
+        is_mod = is_moderator(self.request.user)  # 🔥 извикваш функцията
+        print("IS MODERATOR:", is_moderator)
+        print("USER:", self)
+
+        if not is_mod:
+            obj = self.get_object()
+            form.instance.status = obj.status
+            form.instance.contact_name = obj.contact_name
+
         response = super().form_valid(form)
         messages.warning(self.request, "Report updated.")
         return response
@@ -76,10 +102,32 @@ class ReportUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("reports:details", kwargs={"pk": self.object.pk, "slug": self.object.slug})
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if is_moderator(self.request.user):
+            return qs
+
+        return qs.filter(user=self.request.user)
+
+
 class ReportDeleteView(DeleteView):
     model = Report
     template_name = "reports/report-delete.html"
     success_url = reverse_lazy("reports:list")
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if is_moderator(self.request.user):
+            return qs
+
+        return qs.filter(user=self.request.user)
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)

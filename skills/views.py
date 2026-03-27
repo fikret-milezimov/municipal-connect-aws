@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.shortcuts import redirect
 
 from common.mixins import SearchMixin
+from common.utils import is_content_manager
 from .forms import SkillCreateForm
 from .models import Skill
 
@@ -26,6 +27,16 @@ class SkillDetailView(DetailView):
             return redirect("skills:details", pk=self.object.pk, slug=self.object.slug)
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["can_edit"] = (
+                self.request.user == self.object.user
+                or is_content_manager(self.request.user)
+        )
+
+        return context
 
 class SkillCreateView(LoginRequiredMixin, CreateView):
     model = Skill
@@ -80,6 +91,14 @@ class SkillUpdateView(UpdateView):
             kwargs={"pk": self.object.pk, "slug": self.object.slug},
         )
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if is_content_manager(self.request.user):
+            return qs
+
+        return qs.filter(user=self.request.user)
+
 class SkillDeleteView(DeleteView):
     model = Skill
     template_name = "skills/skill-delete.html"
@@ -90,6 +109,14 @@ class SkillDeleteView(DeleteView):
 
     def get_success_url(self):
         return self.request.POST.get("next") or reverse_lazy("skills:list")
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if is_content_manager(self.request.user):
+            return qs
+
+        return qs.filter(user=self.request.user)
 
 class MySkillsListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Skill

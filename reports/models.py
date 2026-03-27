@@ -71,9 +71,15 @@ class Report(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
-        if self.status == self.Status.RESOLVED and len(self.description) < 20:
-            raise ValidationError(
-                "Resolved reports must have a detailed description (at least 20 characters)."
-            )
 
+        if not self.pk:
+            if self.status != self.Status.OPEN:
+                raise ValidationError({
+                    "status": "New reports must start with 'Open' status."
+                })
+
+        if self.status == self.Status.RESOLVED and len(self.description) < 20:
+            raise ValidationError({
+                "description": "Resolved reports must have at least 20 characters."
+            })
 

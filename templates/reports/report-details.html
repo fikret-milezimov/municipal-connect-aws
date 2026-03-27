@@ -24,12 +24,14 @@
     <p class="mb-3"> <strong>Created at:</strong> {{ report.created_at|date:"d M Y, H:i" }} </p>
     <div class="d-flex flex-wrap gap-2">
         <a href="{% url 'reports:list' %}" class="btn btn-secondary">Back</a>
-        <a href="{% url 'reports:edit' report.pk %}" class="btn btn-warning">
-            Edit
-        </a>
-        <a href="{% url 'reports:delete' report.pk %}" class="btn btn-danger">
-            Delete
-        </a>
+        {% if can_edit %}
+            <a href="{% url 'reports:edit' report.pk %}" class="btn btn-warning">
+                Edit
+            </a>
+            <a href="{% url 'reports:delete' report.pk %}" class="btn btn-danger">
+                Delete
+            </a>
+        {% endif %}
     </div>
 </div>
 
