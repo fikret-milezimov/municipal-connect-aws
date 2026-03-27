@@ -26,7 +26,7 @@
                 All Reports
             </a>
 
-            <a href="{% url 'reports:create' %}" class="btn btn-success">
+            <a href="{% url 'reports:create' %}?next={% url 'reports:my-reports' %}" class="btn btn-success">
                 Create Report
             </a>
         </div>
@@ -60,7 +60,7 @@
             <p class="text-muted mb-3">
                 You have not submitted any community reports yet.
             </p>
-            <a href="{% url 'reports:create' %}" class="btn btn-primary">Create Your First Report</a>
+            <a href="{% url 'reports:create' %}?next={% url 'reports:my-skills' %}" class="btn btn-primary">Create Your First Report</a>
         </div>
     {% endif %}
 </div>

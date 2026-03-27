@@ -26,7 +26,7 @@
                 All Items
             </a>
 
-            <a href="{% url 'marketplace:create' %}" class="btn btn-success">
+            <a href="{% url 'marketplace:create' %}?next={% url 'marketplace:my-items' %}" class="btn btn-success">
                 Create Item
             </a>
         </div>
@@ -78,7 +78,7 @@
             <p class="text-muted mb-3">
                 You have not posted any marketplace items yet.
             </p>
-            <a href="{% url 'marketplace:create' %}" class="btn btn-primary">Create Your First Item</a>
+            <a href="{% url 'marketplace:create' %}?next={% url 'marketplace:my-items' %}" class="btn btn-primary">Create Your First Item</a>
         </div>
     {% endif %}
 </div>

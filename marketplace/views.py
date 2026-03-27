@@ -27,7 +27,7 @@ class MarketplaceDetailView(DetailView):
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
-class MarketplaceCreateView(CreateView):
+class MarketplaceCreateView(LoginRequiredMixin, CreateView):
     model = MarketplaceItem
     form_class = MarketplaceCreateForm
     template_name = "marketplace/marketplace-create.html"
@@ -43,6 +43,17 @@ class MarketplaceCreateView(CreateView):
     def form_invalid(self, form):
         messages.error(self.request, "Please correct the errors below.")
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        next_url = self.request.GET.get("next")
+        if next_url:
+            return next_url
+        return reverse_lazy("marketplace:list")
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request, "You must be logged in to perform this action.")
+        return super().dispatch(request, *args, **kwargs)
 
 class MarketplaceUpdateView(UpdateView):
     model = MarketplaceItem

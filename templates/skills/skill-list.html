@@ -32,7 +32,7 @@
                 <div class="col-md-6 reveal reveal-delay-1">
                     <div class="soft-card p-3 h-100">
                         <h5 class="mb-2">
-                            <a class="text-decoration-none" href="{% url 'skills:details' skill.pk skill.slug %}">
+                            <a class="text-decoration-none" href="{% url 'skills:details' skill.pk skill.slug %}?next={% url 'skills:list' %}">
                                 {{ skill.name }}
                             </a>
                         </h5>

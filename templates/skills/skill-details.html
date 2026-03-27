@@ -34,10 +34,10 @@
         <a href="{% url 'skills:list' %}" class="btn btn-secondary">
             Back
         </a>
-        <a href="{% url 'skills:edit' skill.pk %}" class="btn btn-warning">
+        <a href="{% url 'skills:edit' object.pk  %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning">
             Edit
         </a>
-        <a href="{% url 'skills:delete' skill.pk %}" class="btn btn-danger">
+        <a href="{% url 'skills:delete' object.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-danger">
             Delete
         </a>
     </div>

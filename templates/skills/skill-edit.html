@@ -8,6 +8,7 @@
 
     <form method="post" class="form-stack form-grid">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         {{ form.as_p }}
 
         <div class="form-actions">

@@ -27,7 +27,7 @@ class SkillDetailView(DetailView):
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
-class SkillCreateView(CreateView):
+class SkillCreateView(LoginRequiredMixin, CreateView):
     model = Skill
     form_class = SkillCreateForm
     template_name = "skills/skill-create.html"
@@ -44,6 +44,17 @@ class SkillCreateView(CreateView):
         messages.error(self.request, "Please correct the errors below.")
         return super().form_invalid(form)
 
+    def get_success_url(self):
+        next_url = self.request.GET.get("next")
+        if next_url:
+            return next_url
+        return reverse_lazy("skills:list")
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request, "You must be logged in to perform this action.")
+        return super().dispatch(request, *args, **kwargs)
+
 class SkillUpdateView(UpdateView):
     model = Skill
     form_class = SkillCreateForm
@@ -59,17 +70,26 @@ class SkillUpdateView(UpdateView):
         return super().form_invalid(form)
 
     def get_success_url(self):
-        return reverse_lazy("skills:details", kwargs={"pk": self.object.pk, "slug": self.object.slug})
+        next_url = self.request.POST.get("next")
+
+        if next_url:
+            return next_url
+
+        return reverse_lazy(
+            "skills:details",
+            kwargs={"pk": self.object.pk, "slug": self.object.slug},
+        )
 
 class SkillDeleteView(DeleteView):
     model = Skill
     template_name = "skills/skill-delete.html"
-    success_url = reverse_lazy("skills:list")
 
     def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
         messages.warning(self.request, "Skill deleted.")
-        return response
+        return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return self.request.POST.get("next") or reverse_lazy("skills:list")
 
 class MySkillsListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Skill

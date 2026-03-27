@@ -31,7 +31,7 @@ class ReportDetailView(DetailView):
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
-class ReportCreateView(CreateView):
+class ReportCreateView(LoginRequiredMixin, CreateView):
     model = Report
     form_class = ReportCreateForm
     template_name = "reports/report-create.html"
@@ -47,6 +47,17 @@ class ReportCreateView(CreateView):
     def form_invalid(self, form):
         messages.error(self.request, "Please correct the errors below.")
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        next_url = self.request.GET.get("next")
+        if next_url:
+            return next_url
+        return reverse_lazy("reports:list")
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request, "You must be logged in to perform this action.")
+        return super().dispatch(request, *args, **kwargs)
 
 class ReportUpdateView(UpdateView):
     model = Report

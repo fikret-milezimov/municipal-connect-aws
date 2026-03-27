@@ -11,6 +11,7 @@
 
     <form method="post" class="form-stack">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         <div class="form-actions">
             <button type="submit" class="btn btn-danger">
                 Confirm Delete
