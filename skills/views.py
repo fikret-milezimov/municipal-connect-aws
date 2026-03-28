@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 
 from common.mixins import SearchMixin
 from common.utils import is_content_manager
-from .forms import SkillCreateForm
+from .forms import SkillCreateForm, SkillUpdateForm
 from .models import Skill
 
 
@@ -66,12 +66,20 @@ class SkillCreateView(LoginRequiredMixin, CreateView):
             messages.warning(request, "You must be logged in to perform this action.")
         return super().dispatch(request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
 class SkillUpdateView(UpdateView):
     model = Skill
-    form_class = SkillCreateForm
+    form_class = SkillUpdateForm
     template_name = "skills/skill-edit.html"
 
     def form_valid(self, form):
+        if not is_content_manager(self.request.user):
+            form.instance.contact_name = self.get_object().contact_name
+
         response = super().form_valid(form)
         messages.warning(self.request, "Skill updated.")
         return response
@@ -90,6 +98,11 @@ class SkillUpdateView(UpdateView):
             "skills:details",
             kwargs={"pk": self.object.pk, "slug": self.object.slug},
         )
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def get_queryset(self):
         qs = super().get_queryset()

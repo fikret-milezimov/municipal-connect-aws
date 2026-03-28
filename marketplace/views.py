@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 
 from common.mixins import SearchMixin
 from common.utils import is_content_manager
-from .forms import MarketplaceCreateForm
+from .forms import MarketplaceCreateForm, MarketplaceUpdateForm
 from .models import MarketplaceItem
 
 
@@ -66,12 +66,20 @@ class MarketplaceCreateView(LoginRequiredMixin, CreateView):
             messages.warning(request, "You must be logged in to perform this action.")
         return super().dispatch(request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
 class MarketplaceUpdateView(UpdateView):
     model = MarketplaceItem
-    form_class = MarketplaceCreateForm
+    form_class = MarketplaceUpdateForm
     template_name = "marketplace/marketplace-edit.html"
 
     def form_valid(self, form):
+        if not is_content_manager(self.request.user):
+            form.instance.contact_name = self.get_object().contact_name
+
         response = super().form_valid(form)
         messages.warning(self.request, "Marketplace item updated.")
         return response
@@ -82,6 +90,11 @@ class MarketplaceUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("marketplace:details", kwargs={"pk": self.object.pk, "slug": self.object.slug})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def get_queryset(self):
         qs = super().get_queryset()
