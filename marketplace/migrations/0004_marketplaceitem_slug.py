@@ -1,5 +1,5 @@
 from django.db import migrations, models
-from django.utils.text import slugify
+from slugify import slugify
 
 
 def populate_marketplace_item_slug(apps, schema_editor):

@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, RegexValidator
-from django.utils.text import slugify
+from slugify import slugify
 from django.contrib.auth import get_user_model
 
 
@@ -19,6 +19,7 @@ class Report(models.Model):
         validators=[MinLengthValidator(5)]
     )
     slug = models.SlugField()
+
     description = models.TextField(
         validators=[MinLengthValidator(10)]
     )

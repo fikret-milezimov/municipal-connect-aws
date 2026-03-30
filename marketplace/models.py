@@ -1,7 +1,7 @@
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.text import slugify
+from slugify import slugify
 
 
 UserModel = get_user_model()

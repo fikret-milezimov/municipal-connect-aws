@@ -1,7 +1,7 @@
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.text import slugify
+from slugify import slugify
 
 
 UserModel = get_user_model()
@@ -35,6 +35,7 @@ class Skill(models.Model):
         validators=[MinLengthValidator(3)],
     )
     slug = models.SlugField()
+
     description = models.TextField(
         validators=[MinLengthValidator(10)],
     )
@@ -66,7 +67,6 @@ class Skill(models.Model):
         SkillCategory,
         related_name="skills",
         blank=True,
-        null=True,
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -79,5 +79,5 @@ class Skill(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name or "")
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
