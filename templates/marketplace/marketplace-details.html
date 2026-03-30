@@ -35,14 +35,18 @@
     <p class="text-muted mb-4"><strong>Contact:</strong> {{ item.contact_name }} | {{ item.contact_phone }}</p>
 
     <div class="d-flex flex-wrap gap-2">
-        <a href="{% url 'marketplace:list' %}" class="btn btn-secondary">
-            Back
-        </a>
+        {% if request.GET.next %}
+            <a href="{{ request.GET.next }}" class="btn btn-secondary">Back</a>
+        {% elif request.META.HTTP_REFERER %}
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Back</a>
+        {% else %}
+            <a href="{% url 'marketplace:list' %}" class="btn btn-secondary">Back</a>
+        {% endif %}
         {% if can_edit %}
-            <a href="{% url 'marketplace:edit' item.pk %}" class="btn btn-warning">
+            <a href="{% url 'marketplace:edit' item.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning">
                 Edit
             </a>
-            <a href="{% url 'marketplace:delete' item.pk %}" class="btn btn-danger">
+            <a href="{% url 'marketplace:delete' item.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-danger">
                 Delete
             </a>
         {% endif%}

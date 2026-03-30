@@ -43,7 +43,7 @@
 
                         <div class="p-3">
                             <h5 class="mb-2">
-                                <a class="text-decoration-none" href="{% url 'marketplace:details' item.pk item.slug %}">
+                                <a class="text-decoration-none" href="{% url 'marketplace:details' item.pk item.slug %}?next={% url 'marketplace:my-items' %}">
                                     {{ item.title }}
                                 </a>
                             </h5>

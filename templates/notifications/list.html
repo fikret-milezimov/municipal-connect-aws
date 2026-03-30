@@ -1,0 +1,17 @@
+<h2>Your Notifications</h2>
+
+{% for n in object_list %}
+    <div>
+        {% if n.report %}
+            <a href="{% url 'reports:details' n.report.pk n.report.slug %}">
+                {{ n.message }}
+            </a>
+        {% else %}
+            <p>{{ n.message }}</p>
+        {% endif %}
+
+        {% if not n.is_read %}
+            <a href="{% url 'notifications:read' n.pk %}">Mark as read</a>
+        {% endif %}
+    </div>
+{% endfor %}

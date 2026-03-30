@@ -89,6 +89,9 @@ class MarketplaceUpdateView(UpdateView):
         return super().form_invalid(form)
 
     def get_success_url(self):
+        next_url = self.request.POST.get("next")
+        if next_url:
+            return next_url
         return reverse_lazy("marketplace:details", kwargs={"pk": self.object.pk, "slug": self.object.slug})
 
     def get_form_kwargs(self):
@@ -108,6 +111,9 @@ class MarketplaceDeleteView(DeleteView):
     model = MarketplaceItem
     template_name = "marketplace/marketplace-delete.html"
     success_url = reverse_lazy("marketplace:list")
+
+    def get_success_url(self):
+        return self.request.POST.get("next") or reverse_lazy("marketplace:list")
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
