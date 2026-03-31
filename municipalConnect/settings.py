@@ -163,4 +163,4 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
 EMAIL_HOST_USER = 'fetata_89@abv.bg'
-EMAIL_HOST_PASSWORD = 'ismegul'
+EMAIL_HOST_PASSWORD = ''
