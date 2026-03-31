@@ -115,10 +115,9 @@ class MarketplaceDeleteView(DeleteView):
     def get_success_url(self):
         return self.request.POST.get("next") or reverse_lazy("marketplace:list")
 
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
+    def form_valid(self, form):
         messages.warning(self.request, "Marketplace item deleted.")
-        return response
+        return super().form_valid(form)
 
     def get_queryset(self):
         qs = super().get_queryset()

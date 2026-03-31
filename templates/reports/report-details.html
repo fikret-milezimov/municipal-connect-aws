@@ -34,7 +34,7 @@
             <a href="{% url 'reports:edit' report.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning">
                 Edit
             </a>
-            <a href="{% url 'reports:delete' report.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-danger">
+            <a href="{% url 'reports:delete' report.pk %}?next={{ request.GET.next|default_if_none:''|default:'' }}{% if not request.GET.next %}{% url 'reports:list' %}{% endif %}" class="btn btn-danger">
                 Delete
             </a>
         {% endif %}

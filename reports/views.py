@@ -135,10 +135,9 @@ class ReportDeleteView(DeleteView):
 
         return qs.filter(user=self.request.user)
 
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
+    def form_valid(self, form):
         messages.warning(self.request, "Report deleted.")
-        return response
+        return super().form_valid(form)
 
 
 

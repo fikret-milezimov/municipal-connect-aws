@@ -46,7 +46,7 @@
             <a href="{% url 'marketplace:edit' item.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning">
                 Edit
             </a>
-            <a href="{% url 'marketplace:delete' item.pk %}?next={{ request.GET.next|default:request.path }}" class="btn btn-danger">
+            <a href="{% url 'marketplace:delete' item.pk %}?next={{ request.GET.next|default_if_none:''|default:'' }}{% if not request.GET.next %}{% url 'marketplace:list' %}{% endif %}" class="btn btn-danger">
                 Delete
             </a>
         {% endif%}

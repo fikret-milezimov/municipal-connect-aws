@@ -154,3 +154,13 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny"
     ]
 }
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.abv.bg'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+
+EMAIL_HOST_USER = 'fetata_89@abv.bg'
+EMAIL_HOST_PASSWORD = 'ismegul'
