@@ -1,0 +1,80 @@
+version: "3.9"
+
+services:
+
+  web:
+
+    build: .
+
+    container_name: municipalconnect_web
+
+    restart: always
+
+    command: gunicorn municipalConnect.wsgi:application --bind 0.0.0.0:8000
+
+    volumes:
+
+      - .:/app
+
+      - static_volume:/app/staticfiles
+
+    depends_on:
+
+      - db
+
+    environment:
+
+      - DEBUG=0
+
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/municipalConnect
+
+
+  db:
+
+    image: postgres:16
+
+    container_name: municipal_db
+
+    restart: always
+
+    environment:
+
+      POSTGRES_DB: municipalConnect
+
+      POSTGRES_USER: postgres
+
+      POSTGRES_PASSWORD: postgres
+
+    volumes:
+
+    - postgres_data:/var/lib/postgresql/data/
+
+
+  nginx:
+
+    image: nginx:latest
+
+    container_name: municipalconnect_nginx
+
+    restart: always
+
+    ports:
+
+      - "80:80"
+
+    volumes:
+
+    - static_volume:/app/staticfiles
+
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+    depends_on:
+
+      - web
+
+
+volumes:
+
+  postgres_data:
+
+  static_volume:
