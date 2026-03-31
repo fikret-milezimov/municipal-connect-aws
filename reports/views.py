@@ -100,6 +100,9 @@ class ReportUpdateView(UpdateView):
         return super().form_invalid(form)
 
     def get_success_url(self):
+        next_url = self.request.POST.get("next")
+        if next_url:
+            return next_url
         return reverse_lazy("reports:details", kwargs={"pk": self.object.pk, "slug": self.object.slug})
 
     def get_form_kwargs(self):
@@ -121,6 +124,9 @@ class ReportDeleteView(DeleteView):
     template_name = "reports/report-delete.html"
     success_url = reverse_lazy("reports:list")
 
+    def get_success_url(self):
+        return self.request.POST.get("next") or reverse_lazy("reports:list")
+
     def get_queryset(self):
         qs = super().get_queryset()
 
@@ -129,10 +135,9 @@ class ReportDeleteView(DeleteView):
 
         return qs.filter(user=self.request.user)
 
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
+    def form_valid(self, form):
         messages.warning(self.request, "Report deleted.")
-        return response
+        return super().form_valid(form)
 
 
 

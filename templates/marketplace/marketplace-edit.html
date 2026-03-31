@@ -8,15 +8,18 @@
 
     <form method="post" enctype="multipart/form-data" class="form-stack form-grid">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         {{ form.as_p }}
 
         <div class="form-actions">
             <button type="submit" class="btn btn-warning">
                 Save
             </button>
-            <a href="{% url 'marketplace:details' object.pk object.slug %}" class="btn btn-secondary">
-                Cancel
-            </a>
+            {% if request.GET.next %}
+                <a href="{{ request.GET.next }}" class="btn btn-secondary">Cancel</a>
+            {% else %}
+                <a href="{% url 'marketplace:details' object.pk object.slug %}" class="btn btn-secondary">Cancel</a>
+            {% endif %}
         </div>
     </form>
 </div>

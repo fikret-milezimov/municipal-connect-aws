@@ -31,9 +31,13 @@
     </p>
 
     <div class="d-flex flex-wrap gap-2">
-        <a href="{% url 'skills:list' %}" class="btn btn-secondary">
-            Back
-        </a>
+        {% if request.GET.next %}
+            <a href="{{ request.GET.next }}" class="btn btn-secondary">Back</a>
+        {% elif request.META.HTTP_REFERER %}
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Back</a>
+        {% else %}
+            <a href="{% url 'skills:list' %}" class="btn btn-secondary">Back</a>
+        {% endif %}
         {% if can_edit %}
             <a href="{% url 'skills:edit' object.pk  %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning">
                 Edit

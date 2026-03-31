@@ -37,10 +37,11 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 PROJECT_APPS = [
     "common",
-    "reports",
+    "reports.apps.ReportsConfig",
     "skills",
     "marketplace",
     "accounts.apps.AccountsConfig",
+    "notifications"
 ]
 
 INSTALLED_APPS = [
@@ -76,6 +77,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "notifications.context_processors.unread_notifications",
             ],
         },
     },
@@ -134,6 +136,10 @@ LOGIN_URL = "accounts:login"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
@@ -148,3 +154,13 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny"
     ]
 }
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.abv.bg'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+
+EMAIL_HOST_USER = 'fetata_89@abv.bg'
+EMAIL_HOST_PASSWORD = 'ismegul'

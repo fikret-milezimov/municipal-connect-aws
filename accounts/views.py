@@ -2,10 +2,27 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.views import LoginView, LogoutView
+from notifications.models import Notification
 from .forms import RegisterForm
 from .models import Profile
 from django.contrib.auth.mixins import LoginRequiredMixin
+from notifications.tasks import send_welcome_email
 
+
+# class RegisterView(CreateView):
+#     form_class = RegisterForm
+#     template_name = "accounts/register.html"
+#     success_url = reverse_lazy("accounts:login")
+#
+#     def form_valid(self, form):
+#         response = super().form_valid(form)
+#
+#         messages.success(
+#             self.request,
+#             "Your account was created successfully. You can now log in."
+#         )
+#
+#         return response
 class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = "accounts/register.html"
@@ -14,13 +31,18 @@ class RegisterView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
 
+        # 👇 тук взимаш user-а
+        user = self.object
+
+        # 👇 изпращаш email (async)
+        send_welcome_email.delay(user.email)
+
         messages.success(
             self.request,
             "Your account was created successfully. You can now log in."
         )
 
         return response
-
 
 
 
@@ -41,6 +63,13 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         return self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["latest_notifications"] = Notification.objects.filter(
+            user=self.request.user
+        ).order_by("-created_at")[:3]
+        return context
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):

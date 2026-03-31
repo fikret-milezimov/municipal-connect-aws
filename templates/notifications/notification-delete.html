@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel p-4 p-lg-5 reveal">
+    <div class="section-kicker mb-2">Confirm</div>
+    <h2 class="mb-3">Delete Notification</h2>
+
+    <p>Are you sure you want to delete:</p>
+
+    <div class="soft-card p-4 mb-4">
+        <div class="{% if not object.is_read %}fw-semibold{% endif %}">{{ object.message }}</div>
+        <div class="text-muted small mt-2">{{ object.created_at|date:"M d, Y H:i" }}</div>
+    </div>
+
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next|default:'' }}">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                Confirm Delete
+            </button>
+            <a href="{% url 'notifications:profile-notifications' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

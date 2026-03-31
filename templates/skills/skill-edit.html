@@ -15,9 +15,11 @@
             <button type="submit" class="btn btn-warning">
                 Save
             </button>
-            <a href="{% url 'skills:details' object.pk object.slug %}" class="btn btn-secondary">
-                Cancel
-            </a>
+            {% if request.GET.next %}
+                <a href="{{ request.GET.next }}" class="btn btn-secondary">Cancel</a>
+            {% else %}
+                <a href="{% url 'skills:details' object.pk object.slug %}" class="btn btn-secondary">Cancel</a>
+            {% endif %}
         </div>
     </form>
 </div>
