@@ -16,7 +16,7 @@ services:
 
       - .:/app
 
-      - static_volume:/app/staticfiles
+      - static_volume:/app/static
 
     depends_on:
 
@@ -26,20 +26,20 @@ services:
 
       - DEBUG=0
 
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/municipalConnect
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/municipal_db
 
 
   db:
 
     image: postgres:16
 
-    container_name: municipal_db
+    container_name: municipalconnect_db
 
     restart: always
 
     environment:
 
-      POSTGRES_DB: municipalConnect
+      POSTGRES_DB: municipal_db
 
       POSTGRES_USER: postgres
 
@@ -47,34 +47,24 @@ services:
 
     volumes:
 
-    - postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
 
 
   nginx:
 
     image: nginx:latest
-
     container_name: municipalconnect_nginx
-
     restart: always
-
     ports:
-
       - "80:80"
-
     volumes:
-
-    - static_volume:/app/staticfiles
-
-    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-
+      - static_volume:/app/static
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-
       - web
 
 
 volumes:
 
   postgres_data:
-
   static_volume:
