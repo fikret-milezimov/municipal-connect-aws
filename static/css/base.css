@@ -87,6 +87,24 @@ h1, h2, h3, h4, h5, .display-5 {
     color: #ffffff;
 }
 
+.user-link-label {
+    position: relative;
+    display: inline-block;
+    padding-right: 0.8rem;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 0.05rem;
+    right: 0;
+    display: block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    background: #ff4d4f;
+    z-index: 1;
+}
+
 .glass-panel {
     background: var(--glass);
     border: 1px solid var(--line);

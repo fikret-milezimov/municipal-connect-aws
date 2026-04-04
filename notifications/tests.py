@@ -65,6 +65,16 @@ class NotificationViewsTests(TestCase):
             ),
         )
 
+    def test_navbar_shows_unread_notification_dot(self):
+        self.client.force_login(self.user)
+        unread_notification = self.notifications[0]
+        unread_notification.is_read = False
+        unread_notification.save(update_fields=["is_read"])
+
+        response = self.client.get(reverse("common:home"))
+
+        self.assertContains(response, 'class="notification-dot"', html=False)
+
     def test_mark_as_read_updates_notification_and_redirects_to_next(self):
         self.client.force_login(self.user)
         unread_notification = self.notifications[0]
