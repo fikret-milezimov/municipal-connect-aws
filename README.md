@@ -28,13 +28,13 @@ The goal of the project is to improve communication between residents and make s
 
 ## 🧱 Project Structure
 
-common         - home page, announcements, shared logic
-accounts       - authentication, profiles, user logic
-reports        - reporting local issues
-skills         - skill sharing between users
-marketplace    - marketplace items
-notifications  - notification system
-api            - REST API endpoints
+* common         - home page, announcements, shared logic
+* accounts       - authentication, profiles, user logic
+* reports        - reporting local issues
+* skills         - skill sharing between users
+* marketplace    - marketplace items
+* notifications  - notification system
+* api            - REST API endpoints
 
 ---
 
@@ -57,8 +57,8 @@ api            - REST API endpoints
 
 ### 1. Clone repository
 
-git clone https://github.com/fikret-milezimov/municipal-connect-aws.git
-cd municipal-connect-aws
+* git clone https://github.com/fikret-milezimov/municipal-connect-aws.git
+* cd municipal-connect-aws
 
 ---
 
@@ -129,9 +129,9 @@ Stack:
 
 Example endpoints:
 
-GET    /api/reports/
-POST   /api/reports/
-PATCH  /api/reports/{id}/
+* GET    /api/reports/
+* POST   /api/reports/
+* PATCH  /api/reports/{id}/
 
 * Authentication is required for modifying data
 * Permissions are based on ownership and roles
