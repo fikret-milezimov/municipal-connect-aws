@@ -1,150 +1,187 @@
 # Municipal Connect
 
-Municipal Connect is a simple community platform built with Django.
+Municipal Connect is a community-driven web platform built with Django.
+It allows citizens to report local issues, share skills, and exchange items within their municipality.
 
-The idea behind the project is to improve communication inside a local municipality. Sometimes small problems stay unsolved not because they are difficult, but because people don't have an easy way to report or share them.
-
-This platform connects citizens through reports, shared skills, and a small marketplace.
+The goal of the project is to improve communication between residents and make small community problems more visible and easier to solve.
 
 ---
 
-## Features
+## 🚀 Features
 
-* Create and manage **Reports** (local issues)
-* Share personal **Skills**
-* Post items in the **Marketplace**
-* Optional condition for marketplace items
+* Report local issues (full CRUD functionality)
+* Share personal skills and services
+* Marketplace for offers, requests, and giveaways
+* Notification system for updates
+* Role-based permissions (Moderators, ContentManagers)
 * Search functionality
-* Announcement section
+* Announcements section
 * Background slideshow (JavaScript)
 * Django messages for user feedback
-* Seed script with Faker for demo data
-* Custom 404 page
+* Custom error pages (404)
+* REST API (Django REST Framework)
+* Asynchronous tasks (Celery + Redis)
 
 ---
 
-## Apps Structure
+## 🧱 Project Structure
 
-```
-common       -- home page, announcements, shared logic
-reports      -- reporting local problems
-skills       -- people sharing skills
-marketplace  -- offer, wanted, giveaway items
-```
-
----
-
-## How to Run the Project
-
-Clone the repository.
-
-Create a virtual environment.
-
-Install dependencies:
-
-```
-pip install -r requirements.txt
-```
-
-Apply migrations:
-
-```
-python manage.py migrate
-```
-
-(Optional) Seed the database with demo data:
-
-```
-python manage.py seed_data
-```
-
-Run the development server:
-
-```
-python manage.py runserver
-```
-
-Open in browser:
-
-```
-http://127.0.0.1:8000/
-```
+common         - home page, announcements, shared logic
+accounts       - authentication, profiles, user logic
+reports        - reporting local issues
+skills         - skill sharing between users
+marketplace    - marketplace items
+notifications  - notification system
+api            - REST API endpoints
 
 ---
 
-## Deployment
+## 🛠️ Tech Stack
 
-The project currently runs in a local development environment.
-
-Future deployment could be done using services such as:
-
-* Render
-* Railway
-* PythonAnywhere
-
----
-
-## Technology Stack
-
-* Python
-* Django
+* Python 3.12
+* Django 6
+* Django REST Framework
 * PostgreSQL
+* Docker & Docker Compose
+* Nginx + Gunicorn
+* Redis + Celery
+* Brevo (SMTP email service)
 * Bootstrap 5
-* JavaScript (background slideshow and UI interactions)
-* Faker (for generating demo data)
+* JavaScript
 
 ---
 
-## Design Diagram
+## ⚙️ Setup (Local Development)
 
-The application follows the standard Django web architecture:
+### 1. Clone repository
 
-```
-User
- │
- ▼
-Django Templates (HTML)
- │
- ▼
-Django Views
- │
- ▼
-Django Models
- │
- ▼
-PostgreSQL Database
-```
-
-Views process user requests, interact with models for database operations, and render templates to display the results.
+git clone https://github.com/fikret-milezimov/municipal-connect-aws.git
+cd municipal-connect-aws
 
 ---
 
-## Screenshots
+### 2. Create `.env` file
 
-### Home Page
+Create a `.env` file based on `.env.template`:
 
-![Home](screenshots/home.png)
+SECRET_KEY =
+DB_NAME =
+DB_PASS =
+DB_USER =
+DB_HOST =
+DB_PORT =
+DEBUG =
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+EMAIL_HOST=
+EMAIL_PORT=
+EMAIL_USE_TLS=
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
+DEFAULT_FROM_EMAIL=
+---
 
-### Reports Page
+### 3. Run with Docker
 
-![Reports](screenshots/reports.png)
-
-### Marketplace
-
-![Marketplace](screenshots/marketplace.png)
-
-### Skills Page
-
-![Skills](screenshots/skills.png)
-
-### About page
-
-![About](screenshots/about.png)
+docker-compose up --build
 
 ---
 
-## Purpose
+### 4. Apply migrations
 
-This project was built as part of a Django learning journey.
+docker-compose exec web python manage.py migrate
 
-The goal was to build something realistic, structured, and clean — not just a basic CRUD application.
+---
+
+### 5. (Optional) Seed demo data
+
+docker-compose exec web python manage.py seed_data
+
+---
+
+### 6. Access the app
+
+http://127.0.0.1:8000/
+
+Admin panel:
+http://127.0.0.1:8000/admin/
+
+---
+
+## 🚀 Deployment
+
+The project is deployed using AWS EC2 with Docker Compose.
+
+Stack:
+
+* Nginx (reverse proxy)
+* Gunicorn (application server)
+* PostgreSQL
+* Redis + Celery
+* AWS S3 (static/media files)
+* Brevo (SMTP email service)
+
+---
+
+## 🔌 API
+
+Example endpoints:
+
+GET    /api/reports/
+POST   /api/reports/
+PATCH  /api/reports/{id}/
+
+* Authentication is required for modifying data
+* Permissions are based on ownership and roles
+
+---
+
+## 🧪 Tests
+
+Run tests with:
+
+python manage.py test
+
+The project includes tests for:
+
+* Models
+* Views
+* Forms
+* Permissions
+* API endpoints
+
+---
+
+## 🔐 Security
+
+* CSRF protection enabled
+* Authentication & authorization checks
+* Role-based permissions
+* Environment variables for sensitive data
+* Protection against unauthorized object access
+
+---
+
+## 🎯 Purpose
+
+This project was built as part of the Django Advanced course at SoftUni.
+
+The goal was to design and implement a real-world application that demonstrates:
+
+* clean architecture
+* modular design
+* REST API integration
+* asynchronous processing
+* production-ready deployment
+
+---
+
+## 📸 Screenshots
+
+(Add screenshots here if available)
+
+---
+
+## 📌 Notes
+
+The project follows Django best practices, using class-based views, reusable templates, and clear separation of concerns.
