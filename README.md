@@ -1,5 +1,7 @@
 # Municipal Connect
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green?style=for-the-badge)](http://3.232.182.83/)
+
 Municipal Connect is a community-driven web platform built with Django.
 It allows citizens to report local issues, share skills, and exchange items within their municipality.
 
@@ -43,7 +45,7 @@ api            - REST API endpoints
 * Django REST Framework
 * PostgreSQL
 * Docker & Docker Compose
-* Nginx + Gunicorn
+* Nginx
 * Redis + Celery
 * Brevo (SMTP email service)
 * Bootstrap 5
@@ -64,21 +66,21 @@ cd municipal-connect-aws
 
 Create a `.env` file based on `.env.template`:
 
-SECRET_KEY =
-DB_NAME =
-DB_PASS =
-DB_USER =
-DB_HOST =
-DB_PORT =
-DEBUG =
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-EMAIL_HOST=
-EMAIL_PORT=
-EMAIL_USE_TLS=
-EMAIL_HOST_USER=
-EMAIL_HOST_PASSWORD=
-DEFAULT_FROM_EMAIL=
+* SECRET_KEY =
+* DB_NAME =
+* DB_PASS =
+* DB_USER =
+* DB_HOST =
+* DB_PORT =
+* DEBUG =
+* AWS_ACCESS_KEY_ID=
+* AWS_SECRET_ACCESS_KEY=
+* EMAIL_HOST=
+* EMAIL_PORT=
+* EMAIL_USE_TLS=
+* EMAIL_HOST_USER=
+* EMAIL_HOST_PASSWORD=
+* DEFAULT_FROM_EMAIL=
 ---
 
 ### 3. Run with Docker
@@ -115,12 +117,12 @@ The project is deployed using AWS EC2 with Docker Compose.
 Stack:
 
 * Nginx (reverse proxy)
-* Gunicorn (application server)
 * PostgreSQL
 * Redis + Celery
 * AWS S3 (static/media files)
 * Brevo (SMTP email service)
 
+🌐 Live Demo: http://3.232.182.83/
 ---
 
 ## 🔌 API
