@@ -180,7 +180,38 @@ The goal was to design and implement a real-world application that demonstrates:
 
 ## 📸 Screenshots
 
-(Add screenshots here if available)
+### 🏠 Home Page
+![Home](assets/screenshots/Home.png)
+
+### 🔐 Login
+![Login](assets/screenshots/Login.png)
+
+### 📝 Register
+![Register](assets/screenshots/Register.png)
+
+### ℹ️ About
+![About](assets/screenshots/About.png)
+
+### 👤 Profile
+![Profile](assets/screenshots/Profile.png)
+
+### 📍 Reports
+![Reports](assets/screenshots/Reports.png)
+
+### 🛠️ Skills
+![Skills](assets/screenshots/Skills.png)
+
+### 🛒 Marketplace
+![Marketplace](assets/screenshots/Marketplace.png)
+
+### ➕ Create Report
+![Create Report](assets/screenshots/Create report.png)
+
+### ➕ Create Skill
+![Create Skill](assets/screenshots/Create skill.png)
+
+### ➕ Create Marketplace Item
+![Create Marketplace Item](assets/screenshots/Create marketplace item.png)
 
 ---
 
