@@ -205,13 +205,13 @@ The goal was to design and implement a real-world application that demonstrates:
 ![Marketplace](assets/screenshots/Marketplace.png)
 
 ### ➕ Create Report
-![Create Report](assets/screenshots/Create report.png)
+![Create Report](assets/screenshots/Create-report.png)
 
 ### ➕ Create Skill
-![Create Skill](assets/screenshots/Create skill.png)
+![Create Skill](assets/screenshots/Create-skill.png)
 
 ### ➕ Create Marketplace Item
-![Create Marketplace Item](assets/screenshots/Create marketplace item.png)
+![Create Marketplace Item](assets/screenshots/Create-marketplace-item.png)
 
 ---
 
